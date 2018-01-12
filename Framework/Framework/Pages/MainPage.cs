@@ -69,7 +69,7 @@ namespace Framework.Pages
         public bool isWork()
         {
             var url = driver.Url;
-            return url == BASE_URL ? false : true;
+            return url.Equals(BASE_URL) ? false : true;
         }
 
     }
