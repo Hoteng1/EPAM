@@ -64,9 +64,14 @@ namespace Framework.Steps
             return new MainPage(webDriver).IsTravelListExist();
         }
 
-        public bool isError()
+        public bool isError(string message)
         {
-            return new MainPage(webDriver).isErrorExist();
+            return new MainPage(webDriver).isErrorExist(message);
+        }
+
+        public bool isCorrectDate(DateTime fromDate, DateTime toDate)
+        {
+            return new MainPage(webDriver).isDateFollow(fromDate, toDate);
         }
     }
 }

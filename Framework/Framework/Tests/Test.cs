@@ -11,6 +11,8 @@ namespace Framework.Tests
     [TestClass]
     public class Test
     {
+        private readonly string ERROR_EMPTY_FIELD = "Please fill in destination";
+        private readonly string ERROR_EQUEL_FILEDS = "Destination and point of departure cannot be the same";
         Steps.Step steps = new Steps.Step();
         int month = DateTime.Now.Month;
         int year = DateTime.Now.Year;
@@ -79,16 +81,16 @@ namespace Framework.Tests
             steps.SearchWithDate(null, tomorow);
 
 
-            Assert.IsTrue(steps.isError());
+            Assert.IsTrue(steps.isError(ERROR_EMPTY_FIELD));
         }
 
         [TestMethod]
         public void TestWithNullDeparture()
         {
             steps.InitBrowser();
-            steps.SearchTravel(null, "Barselona");
+            steps.SearchTravel( "Barselona", null);
 
-            Assert.IsTrue(steps.isError());
+            Assert.IsTrue(steps.isError(ERROR_EMPTY_FIELD));
         }
 
         [TestMethod]
@@ -100,7 +102,7 @@ namespace Framework.Tests
             steps.SearchWithDate(tomorow, today);
 
 
-            Assert.IsTrue(steps.isError()); ;
+            Assert.IsTrue(steps.isCorrectDate(tomorow,today));
         }
 
         [TestMethod]
@@ -109,7 +111,7 @@ namespace Framework.Tests
             steps.InitBrowser();
             steps.SearchTravel("London", "London");
 
-            Assert.IsTrue(steps.isError());
+            Assert.IsTrue(steps.isError(ERROR_EQUEL_FILEDS));
         }
 
 

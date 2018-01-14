@@ -8,6 +8,8 @@ namespace Framework.Pages
     {
         private const string BASE_URL = "https://www.goeuro.com/";
         private string errorLabel = "*//div[@class='sb-field'//div[@class='sb-error']";
+        private string listTravel = "//div[@class='dwContainer']//div[@class='Results__tabsBody___2LwJ4']";
+
         private IWebDriver driver;
 
         [FindsBy(How = How.Id, Using = "departureCity")]
@@ -61,7 +63,7 @@ namespace Framework.Pages
             dateTravel.SendKeys(date.ToString());
         }
 
-        public void SetDate(DateTime? fromDate,DateTime? toDate)
+        public void SetDate(DateTime? fromDate, DateTime? toDate)
         {
             tripType.SendKeys("Round-Trip");
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
@@ -74,17 +76,36 @@ namespace Framework.Pages
             this.countPeople.SendKeys(count.ToString());
         }
 
-  
+
 
         public bool IsTravelListExist()
         {
-            var travelList = driver.FindElements(By.XPath("//div[@class='dwContainer']//div[@class='Results__tabsBody___2LwJ4']"));
+            var travelList = driver.FindElements(By.XPath(listTravel));
             return travelList.Count > 0 ? true : false;
         }
-         public bool isErrorExist()
+
+        public bool isErrorExist(string message)
         {
             var errorLabel = driver.FindElement(By.XPath(this.errorLabel));
-            return errorLabel != null;
+
+            if(message.Equals(errorLabel.Text))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool isDateFollow(DateTime fromDate , DateTime toDate)
+        {
+            if(dateTravel.Text.ToString().Equals(fromDate.ToString()) && dateReturn.Text.ToString().Equals(toDate.ToString()))
+            {
+                return true;
+            }
+
+            return false;
+            
+            
         }
 
     }
