@@ -6,7 +6,7 @@ namespace Framework.Pages
 {
     public class MainPage
     {
-        private const string BASE_URL = "http://www.github.com/new";
+        private const string BASE_URL = "https://www.goeuro.com/";
         private string errorLabel = "*//div[@class='sb-field'//div[@class='sb-error']";
         private IWebDriver driver;
 
