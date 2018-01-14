@@ -7,6 +7,7 @@ namespace Framework.Pages
     public class MainPage
     {
         private const string BASE_URL = "http://www.github.com/new";
+        private string errorLabel = "*//div[@class='sb-field'//div[@class='sb-error']";
         private IWebDriver driver;
 
         [FindsBy(How = How.Id, Using = "departureCity")]
@@ -37,7 +38,7 @@ namespace Framework.Pages
 
             this.driver = driver;
             PageFactory.InitElements(this.driver, this);
-        } 
+        }
 
         public void OpenPage()
         {
@@ -49,27 +50,41 @@ namespace Framework.Pages
             butttonCreate.Click();
         }
 
-        public void CaseTests(string from , string to, string date,string dateReturn, bool isReturn, int countPeople)
+        public void SetPiece(string from, string to)
         {
             inputFromPiece.SendKeys(from);
-            inputFromPiece.SendKeys(to);
-            dateTravel.SendKeys(date);
-            this.countPeople.SendKeys(countPeople.ToString());
-            if(isReturn)
-            {
-                tripType.SendKeys("Round-Trip");
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
-                this.dateReturn.SendKeys("dateRetrun");
-                
-            }
-            ClickButton();
-            
+            inputToPiece.SendKeys(to);
         }
 
-        public bool isWork()
+        public void SetDate(DateTime date)
         {
-            var url = driver.Url;
-            return url.Equals(BASE_URL) ? false : true;
+            dateTravel.SendKeys(date.ToString());
+        }
+
+        public void SetDate(DateTime? fromDate,DateTime? toDate)
+        {
+            tripType.SendKeys("Round-Trip");
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
+            dateTravel.SendKeys(fromDate.ToString());
+            dateReturn.SendKeys(toDate.ToString());
+        }
+
+        public void SetPeople(int count)
+        {
+            this.countPeople.SendKeys(count.ToString());
+        }
+
+  
+
+        public bool IsTravelListExist()
+        {
+            var travelList = driver.FindElements(By.XPath("//div[@class='dwContainer']//div[@class='Results__tabsBody___2LwJ4']"));
+            return travelList.Count > 0 ? true : false;
+        }
+         public bool isErrorExist()
+        {
+            var errorLabel = driver.FindElement(By.XPath(this.errorLabel));
+            return errorLabel != null;
         }
 
     }

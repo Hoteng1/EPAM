@@ -11,10 +11,16 @@ namespace Framework.Tests
     [TestClass]
     public class Test
     {
-
+        Steps.Step steps = new Steps.Step();
+        int month = DateTime.Now.Month;
+        int year = DateTime.Now.Year;
+        int tomorowDay = DateTime.Now.Day + 1;
+        DateTime today;
+        DateTime tomorow;
         public Test()
         {
-
+            today= DateTime.Now; 
+            tomorow = new DateTime(year, month, tomorowDay); 
         }
 
         private TestContext testContextInstance;
@@ -33,82 +39,79 @@ namespace Framework.Tests
         }
 
         [TestMethod]
-        public void TestOne()
+        public void TestCommot()
         {
-            var webDriver = Driver.DriverInstane.GetInstance();
-            MainPage mainPage = new MainPage(webDriver);
-            mainPage.OpenPage();
-            mainPage.CaseTests("Paris", "Barselona", "13.01.2018", null, false, 1);
+            steps.InitBrowser();
+            steps.SearchTravel("Paris", "Barselona");
 
-            Assert.IsTrue(mainPage.isWork());
+
+            Assert.IsTrue(steps.isListExist());
         }
 
         [TestMethod]
         public void TestTwo()
         {
-            var webDriver = Driver.DriverInstane.GetInstance();
-            MainPage mainPage = new MainPage(webDriver);
-            mainPage.OpenPage();
-            mainPage.CaseTests("Paris", "Barselona", "13.01.2018", null, false, 3);
 
-            Assert.IsTrue(mainPage.isWork());
+            steps.InitBrowser();
+            steps.SearchWithPeople(3);
+
+            Assert.IsTrue(steps.isListExist());
         }
 
         [TestMethod]
-        public void TestThree()
+        public void TestWithDate()
         {
-            var webDriver = Driver.DriverInstane.GetInstance();
-            MainPage mainPage = new MainPage(webDriver);
-            mainPage.OpenPage();
-            mainPage.CaseTests("Paris", "Barselona", "13.01.2018", "14.02.2018",true , 1);
+            steps.InitBrowser();
 
-            Assert.IsTrue(mainPage.isWork());
+
+            steps.SearchWithDate(today, tomorow);
+
+
+            Assert.IsTrue(steps.isListExist());
         }
 
         [TestMethod]
-        public void TestFour()
+        public void TestWithNullFirstDate()
         {
-            var webDriver = Driver.DriverInstane.GetInstance();
-            MainPage mainPage = new MainPage(webDriver);
-            mainPage.OpenPage();
-            mainPage.CaseTests("Paris", "", "13.01.2018", null, false, 1);
+            steps.InitBrowser();
 
-            Assert.IsTrue(mainPage.isWork());
+            
+            steps.SearchWithDate(null, tomorow);
+
+
+            Assert.IsTrue(steps.isError());
         }
 
         [TestMethod]
-        public void TestFive()
+        public void TestWithNullDeparture()
         {
-            var webDriver = Driver.DriverInstane.GetInstance();
-            MainPage mainPage = new MainPage(webDriver);
-            mainPage.OpenPage();
-            mainPage.CaseTests("", "Barselona", "13.01.2018", null, false, 1);
+            steps.InitBrowser();
+            steps.SearchTravel(null, "Barselona");
 
-            Assert.IsTrue(mainPage.isWork());
+            Assert.IsTrue(steps.isError());
         }
 
         [TestMethod]
-        public void TestSix()
+        public void TestWithWrongDate()
         {
-            var webDriver = Driver.DriverInstane.GetInstance();
-            MainPage mainPage = new MainPage(webDriver);
-            mainPage.OpenPage();
-            mainPage.CaseTests("Paris", "Barselona", "15.01.2018", "14.01.2018", true, 1);
+            steps.InitBrowser();
 
-            Assert.IsTrue(mainPage.isWork());
+
+            steps.SearchWithDate(tomorow, today);
+
+
+            Assert.IsTrue(steps.isError()); ;
         }
 
         [TestMethod]
         public void TestSeven()
         {
-            var webDriver = Driver.DriverInstane.GetInstance();
-            MainPage mainPage = new MainPage(webDriver);
-            mainPage.OpenPage();
-            mainPage.CaseTests("London", "London", "13.01.2018", null, false, 1);
+            steps.InitBrowser();
+            steps.SearchTravel("London", "London");
 
-            Assert.IsTrue(mainPage.isWork());
+            Assert.IsTrue(steps.isError());
         }
 
-       
+
     }
 }
